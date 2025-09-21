@@ -1,0 +1,66 @@
+version: "3.9"
+
+services:
+  # =========================
+  # BACKEND (FastAPI)
+  # =========================
+  backend:
+    build: ./backend                # backend klasöründen Dockerfile ile imaj oluştur
+    container_name: battery_backend
+    ports:
+      - "8000:8000"                  # dışarıdan 8000 portuna erişim (API)
+    environment:
+      - MQTT_HOST=mosquitto          # backend, MQTT broker olarak "mosquitto" servisini görecek
+      - MQTT_PORT=1883
+    depends_on:
+      - mosquitto                    # önce broker ayağa kalksın
+    networks:
+      - soc-net
+
+  # =========================
+  # FRONTEND (Streamlit)
+  # =========================
+  frontend:
+    build: ./frontend                # frontend klasöründen Dockerfile ile imaj oluştur
+    container_name: battery_frontend
+    ports:
+      - "8501:8501"                  # dışarıdan 8501 portuna erişim (UI)
+    depends_on:
+      - backend                      # backend hazır olmadan frontend çalışmasın
+    networks:
+      - soc-net
+
+  # =========================
+  # MQTT BROKER (Mosquitto)
+  # =========================
+  mosquitto:
+    image: eclipse-mosquitto         # hazır Eclipse Mosquitto imajı
+    container_name: battery_mqtt
+    ports:
+      - "1883:1883"                  # MQTT broker
+      - "9001:9001"                  # WebSocket (opsiyonel)
+    networks:
+      - soc-net
+
+  # =========================
+  # PUBLISHER (CSV → MQTT)
+  # =========================
+  publisher:
+    build: ./publisher               # publisher klasöründen Dockerfile ile imaj oluştur
+    container_name: battery_publisher
+    environment:
+      - MQTT_HOST=mosquitto          # broker olarak "mosquitto" kullanılacak
+      - MQTT_PORT=1883
+      - CSV_B0006=B0006_discharge_clean.csv   # hangi CSV’yi publish edeceğini belirtiyoruz
+      - SLEEP_SEC=1.0                          # her satır arası bekleme süresi
+    depends_on:
+      - mosquitto
+    networks:
+      - soc-net
+
+# =========================
+# ORTAK AĞ
+# =========================
+networks:
+  soc-net:
+    driver: bridge

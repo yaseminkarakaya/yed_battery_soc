@@ -1,0 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+env/
+venv/
+.ipynb_checkpoints/
+
+# IDE/OS
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Build
+build/
+dist/
+*.egg-info/
+.pytest_cache/
+
+# Secrets
+.env
+*.key
+*.pem
+
+# Veriler/model (büyükse)
+data/
+*.csv
+*.pth
+*.pt
+*.h5
+*.onnx
