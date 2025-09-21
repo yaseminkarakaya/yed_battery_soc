@@ -38,10 +38,9 @@ Publisher: CSV’den MQTT’ye otomatik veri yollar
 
 1)Backend (FastAPI)
 
+
 cd backend
-
 pip install -r requirements.txt
-
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 
@@ -51,10 +50,9 @@ uvicorn main:app --reload --host 0.0.0.0 --port 8000
 
 2)Frontend (Streamlit)
 
+
 cd frontend
-
 pip install -r requirements.txt
-
 streamlit run app.py
 
 
@@ -62,10 +60,9 @@ UI adresi: http://localhost:8501
 
 3)Publisher (Opsiyonel)
 
+
 cd publisher
-
 pip install -r requirements.txt
-
 python mqtt_publisher.py
 
 
