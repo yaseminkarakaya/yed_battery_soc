@@ -4,6 +4,8 @@
 Bu proje, elektrikli araç bataryalarının Şarj Durumu (State of Charge – SoC) tahminini yapmak için geliştirilmiştir.
 NASA’nın sağladığı B0005, B0006 ve B0018 batarya veri setleri kullanılarak model eğitilmiş ve farklı bataryalardan gelen verilerle test edilmiştir.
 
+
+
 Projedeki Bileşenler
 
 Backend (FastAPI): Eğitilen modeli REST API olarak sunar.
@@ -15,11 +17,14 @@ Mosquitto (MQTT Broker): Publisher’dan gelen verileri backend’e iletir.
 Publisher: CSV dosyasından batarya verilerini MQTT üzerinden yayınlar.
 
 
+
+
  -Docker ile Çalıştırma
  
 Proje kök klasöründe (docker-compose.yml olan yerde):
 
     docker compose up --build
+
 
     
 -Çalışan servisler
@@ -34,36 +39,50 @@ Publisher: CSV’den MQTT’ye otomatik veri yollar
 
 
 
+
+
  -Docker Çalışmazsa Manuel Çalıştırma
+
 
 1)Backend (FastAPI)
 
 
 cd backend
+
 pip install -r requirements.txt
+
 uvicorn main:app --reload --host 0.0.0.0 --port 8000
+
 
 
 
  API adresi: http://localhost:8000/docs
 
 
+
 2)Frontend (Streamlit)
 
 
 cd frontend
+
 pip install -r requirements.txt
+
 streamlit run app.py
 
 
 UI adresi: http://localhost:8501
 
+
+
 3)Publisher (Opsiyonel)
 
 
 cd publisher
+
 pip install -r requirements.txt
+
 python mqtt_publisher.py
+
 
 
 -API Endpointleri
@@ -88,6 +107,8 @@ POST /upload → CSV/XLSX dosyası yükleyip toplu tahmin
   "Temperature": 25.0,
   "device_id": "manual"
 }
+
+
 
 -Frontend Özellikleri
  
